@@ -18,5 +18,15 @@
     <string name="neck">neck: circumference in inches</string>
     <string name="chest">chest: circumference in inches</string>
     <string name="waist">waist: circumference in inches</string>
+    <string name="hip">hip: circumference in inches</string>
+    <string name="inseam">inseam: circumference in inches</string>
+    <string name="comment">comments</string>
+
+    <string name="save">save</string>
+
+
+
+
+
 
 </resources>
