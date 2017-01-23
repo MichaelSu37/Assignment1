@@ -34,6 +34,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/records"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            </ListView>
         </LinearLayout>
 
     </LinearLayout>
