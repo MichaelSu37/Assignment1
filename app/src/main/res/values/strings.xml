@@ -14,8 +14,9 @@
 
 
     <string name="enter_name">Enter name here</string>
-    <string name="enter_date">Enter Date here</string>
+    <string name="enter_date">Enter Date here, yyyy-mm-dd</string>
     <string name="neck">neck: circumference in inches</string>
+    <string name="bust">bust: circumference in inches</string>
     <string name="chest">chest: circumference in inches</string>
     <string name="waist">waist: circumference in inches</string>
     <string name="hip">hip: circumference in inches</string>

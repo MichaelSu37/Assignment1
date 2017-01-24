@@ -25,22 +25,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/neck" />
+        <EditText android:id="@+id/enter_bust"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bust" />
+        <EditText android:id="@+id/enter_chest"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/chest" />
         <EditText android:id="@+id/enter_waist"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/waist" />
-        <EditText
+        <EditText android:id="@+id/enter_hip"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hip" />
-        <EditText
+        <EditText android:id="@+id/enter_inseam"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/inseam" />
-        <EditText
+        <EditText android:id="@+id/enter_comment"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +59,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/save"/>
+            android:text="@string/save"
+            android:onClick="saveRecord"/>
     </LinearLayout>
 
 </LinearLayout>

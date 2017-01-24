@@ -1,11 +1,13 @@
 package com.example.ysu3_sizebook;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class add_record extends ActionBarActivity {
@@ -47,5 +49,43 @@ public class add_record extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public int saveRecord(){
+        // need to check if name is empty and date in correct format
+        EditText Name = (EditText) findViewById(R.id.enter_name);
+        EditText Date = (EditText) findViewById(R.id.enter_date);
+
+        EditText neck = (EditText) findViewById(R.id.enter_neck);
+        EditText bust = (EditText) findViewById(R.id.enter_bust);
+        EditText chest = (EditText) findViewById(R.id.enter_chest);
+        EditText waist = (EditText) findViewById(R.id.enter_waist);
+        EditText hip = (EditText) findViewById(R.id.enter_hip);
+        EditText inseam = (EditText) findViewById(R.id.enter_inseam);
+        EditText comment = (EditText) findViewById(R.id.enter_comment);
+
+
+        SharedPreferences sp = getSharedPreferences("key", 0);
+        SharedPreferences.Editor spe = sp.edit();
+        spe.putString("Name", Name.getText().toString());
+        spe.putString("Date", Date.getText().toString());
+        spe.putString("neck", neck.getText().toString());
+        spe.putString("bust", bust.getText().toString());
+        spe.putString("chest", chest.getText().toString());
+        spe.putString("waist", waist.getText().toString());
+        spe.putString("hip", hip.getText().toString());
+        spe.putString("inseam", inseam.getText().toString());
+        spe.putString("comment", comment.getText().toString());
+        spe.apply();
+
+
+        /*
+        retrieve
+        SharedPreferences sp = getSharedPreferences("key", 0);
+        String tValue = sp.getString("textvalue","");
+        String tOperative = sp.getString("txtopertaive","");
+         */
+        return 0;
     }
 }

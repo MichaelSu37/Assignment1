@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity {
-    public final static String EXTRA_MESSAGE = "com.example.sizebook.MESSAGE";
+    //public final static String EXTRA_MESSAGE = "com.example.sizebook.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
