@@ -1,31 +1,90 @@
 package com.example.ysu3_sizebook;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import android.util.Log;
+
+
 public class add_record extends ActionBarActivity {
+    public static final String FILENAME = "file.sav";
+    private ArrayList<Record> recordList;
+    private Record rec = new Record();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
-
         Intent intent = getIntent();
-        /*
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        TextView textView = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText(message);
-        */
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
-        //layout.addView(textView);
+
+
+        Button saveButton = (Button) findViewById(R.id.save);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                EditText t1 = (EditText) findViewById(R.id.enter_name);
+                EditText t2 = (EditText) findViewById(R.id.enter_date);
+                EditText t3 = (EditText) findViewById(R.id.enter_neck);
+                EditText t4 = (EditText) findViewById(R.id.enter_bust);
+                EditText t5 = (EditText) findViewById(R.id.enter_chest);
+                EditText t6 = (EditText) findViewById(R.id.enter_waist);
+                EditText t7 = (EditText) findViewById(R.id.enter_hip);
+                EditText t8 = (EditText) findViewById(R.id.enter_inseam);
+                EditText t9 = (EditText) findViewById(R.id.enter_comment);
+
+                String name = t1.getText().toString();
+                String date = t2.getText().toString();
+                String neck = t3.getText().toString();
+                String bust = t4.getText().toString();
+                String chest = t5.getText().toString();
+                String waist = t6.getText().toString();
+                String hip = t7.getText().toString();
+                String inseam = t8.getText().toString();
+                String comment = t9.getText().toString();
+
+                rec.setName(name);
+                rec.setDate(date);
+                rec.setNeck(neck);
+                rec.setBust(bust);
+                rec.setChest(chest);
+                rec.setWaist(waist);
+                rec.setHip(hip);
+                rec.setInseam(inseam);
+                rec.setComment(comment);
+
+                //recordList.add(rec);
+
+                saveInFile();
+                finish();
+                }
+        });
+
+
+
 
     }
 
@@ -52,40 +111,20 @@ public class add_record extends ActionBarActivity {
     }
 
 
-    public int saveRecord(){
-        // need to check if name is empty and date in correct format
-        EditText Name = (EditText) findViewById(R.id.enter_name);
-        EditText Date = (EditText) findViewById(R.id.enter_date);
+    public void saveInFile() {
+        try {
+            FileOutputStream outf = openFileOutput(FILENAME, Context.MODE_APPEND);
 
-        EditText neck = (EditText) findViewById(R.id.enter_neck);
-        EditText bust = (EditText) findViewById(R.id.enter_bust);
-        EditText chest = (EditText) findViewById(R.id.enter_chest);
-        EditText waist = (EditText) findViewById(R.id.enter_waist);
-        EditText hip = (EditText) findViewById(R.id.enter_hip);
-        EditText inseam = (EditText) findViewById(R.id.enter_inseam);
-        EditText comment = (EditText) findViewById(R.id.enter_comment);
+            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(outf)));
 
+            Gson gson = new Gson();
+            gson.toJson(recordList, out);
+            out.flush();
 
-        SharedPreferences sp = getSharedPreferences("key", 0);
-        SharedPreferences.Editor spe = sp.edit();
-        spe.putString("Name", Name.getText().toString());
-        spe.putString("Date", Date.getText().toString());
-        spe.putString("neck", neck.getText().toString());
-        spe.putString("bust", bust.getText().toString());
-        spe.putString("chest", chest.getText().toString());
-        spe.putString("waist", waist.getText().toString());
-        spe.putString("hip", hip.getText().toString());
-        spe.putString("inseam", inseam.getText().toString());
-        spe.putString("comment", comment.getText().toString());
-        spe.apply();
-
-
-        /*
-        retrieve
-        SharedPreferences sp = getSharedPreferences("key", 0);
-        String tValue = sp.getString("textvalue","");
-        String tOperative = sp.getString("txtopertaive","");
-         */
-        return 0;
+        } catch (FileNotFoundException e) {
+            recordList = new ArrayList<Record>();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 }
