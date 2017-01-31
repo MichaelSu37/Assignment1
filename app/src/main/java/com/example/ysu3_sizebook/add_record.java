@@ -3,14 +3,12 @@ package com.example.ysu3_sizebook;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,6 +29,15 @@ public class add_record extends ActionBarActivity {
     public static final String FILENAME = "file.sav";
     private ArrayList<Record> recordList;
     private Record rec = new Record();
+    private String name;
+    private String date ;
+    private String neck;
+    private String bust;
+    private String chest;
+    private String waist;
+    private String hip;
+    private String inseam;
+    private String comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +63,15 @@ public class add_record extends ActionBarActivity {
                 EditText t8 = (EditText) findViewById(R.id.enter_inseam);
                 EditText t9 = (EditText) findViewById(R.id.enter_comment);
 
-                String name = t1.getText().toString();
-                String date = t2.getText().toString();
-                String neck = t3.getText().toString();
-                String bust = t4.getText().toString();
-                String chest = t5.getText().toString();
-                String waist = t6.getText().toString();
-                String hip = t7.getText().toString();
-                String inseam = t8.getText().toString();
-                String comment = t9.getText().toString();
+                name = t1.getText().toString();
+                date = t2.getText().toString();
+                neck = t3.getText().toString();
+                bust = t4.getText().toString();
+                chest = t5.getText().toString();
+                waist = t6.getText().toString();
+                hip = t7.getText().toString();
+                inseam = t8.getText().toString();
+                comment = t9.getText().toString();
 
                 rec.setName(name);
                 rec.setDate(date);
@@ -76,7 +83,7 @@ public class add_record extends ActionBarActivity {
                 rec.setInseam(inseam);
                 rec.setComment(comment);
 
-                //recordList.add(rec);
+                recordList.add(rec);
 
                 saveInFile();
                 finish();
@@ -113,9 +120,9 @@ public class add_record extends ActionBarActivity {
 
     public void saveInFile() {
         try {
-            FileOutputStream outf = openFileOutput(FILENAME, Context.MODE_APPEND);
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
 
-            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(outf)));
+            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
 
             Gson gson = new Gson();
             gson.toJson(recordList, out);

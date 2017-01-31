@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayAdapter<Record> adapter;
     private ListView oldRecordList;
     private ArrayList<Record> recordList;
+    private Record selectedRecord;
 
 
     @Override
@@ -39,18 +40,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         oldRecordList = (ListView) findViewById(R.id.list_of_record);
 
 
-        oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Record selected_record = (Record) adapterView.getSelectedItem();
-            }
-
-
-        });
 
     }
 
@@ -85,9 +77,22 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
         loadFromFile();
         adapter = new ArrayAdapter<Record>(this, R.layout.list_item, recordList);
         oldRecordList.setAdapter(adapter);
+
+
+
+
+        oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedRecord = (Record) adapterView.getSelectedItem();
+            }
+
+
+        });
     }
 
 
