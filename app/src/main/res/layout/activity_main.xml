@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number_of_records"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -58,7 +59,7 @@
             android:layout_weight="1"
             android:text="@string/add_record"
             android:onClick="addRecord"/>
-        <Button
+        <Button android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

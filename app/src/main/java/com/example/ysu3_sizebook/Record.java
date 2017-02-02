@@ -13,6 +13,7 @@ public class Record {
     private String hip;
     private String inseam;
     private String comment;
+    private String finalString;
 
     public Record(String name){
         this.name = name;
@@ -109,5 +110,16 @@ public class Record {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString(){
+        finalString = null;
+        finalString = "Name: " + name + "\n" +
+                "bust: " + bust + "\n" +
+                "chest: " + chest + "\n" +
+                "waist: " + waist + "\n" +
+                "inseam: "+ inseam;
+        return finalString;
     }
 }

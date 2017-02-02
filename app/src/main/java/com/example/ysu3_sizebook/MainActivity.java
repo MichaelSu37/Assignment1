@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,12 +32,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
-    //public final static String EXTRA_MESSAGE = "com.example.sizebook.MESSAGE";
-    public static final String FILENAME = "file.sav";
+    public static final String FILENAME = "save.sav";
+    public static final String TEMPFILE = "temp.sav";
+
     private ArrayAdapter<Record> adapter;
+    private Adapter intAdapter;
+    private TextView recordLength;
+
     private ListView oldRecordList;
     private ArrayList<Record> recordList;
     private Record selectedRecord;
+    private int length;
 
 
     @Override
@@ -40,10 +50,54 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        recordList = new ArrayList<>();
         oldRecordList = (ListView) findViewById(R.id.list_of_record);
+        recordLength = (TextView) findViewById(R.id.totalnumber);
+
+        oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int i, long l) {
+                selectedRecord = (Record) adapter.getSelectedItem();
+                if (selectedRecord == null){
+                    Log.d("debug", "not selected");
+                }
+            }
 
 
+        });
 
+        Button deleteButton = (Button) findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                if (selectedRecord != null){
+                    recordList.remove(selectedRecord);
+
+                    try {
+                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                        BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
+                        FileOperation fw = new FileOperation(recordList, out);
+                        fw.saveInFile();
+                    } catch (FileNotFoundException e) {
+                        recordList = new ArrayList<Record>();
+                    } catch (IOException e) {
+                        throw new RuntimeException();
+                    }
+                    adapter.notifyDataSetChanged();
+
+
+                }
+                else{
+                    Context context = getApplicationContext();
+                    int duration = Toast.LENGTH_SHORT;
+                    CharSequence text = "Please select a record first!";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -77,54 +131,38 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStart(){
         super.onStart();
-
-        loadFromFile();
-        adapter = new ArrayAdapter<Record>(this, R.layout.list_item, recordList);
-        oldRecordList.setAdapter(adapter);
-
-
-
-
-        oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedRecord = (Record) adapterView.getSelectedItem();
-            }
-
-
-        });
-    }
-
-
-
-
-
-
-
-    public void loadFromFile(){
         try {
             FileInputStream inf = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(inf));
-
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Record>>(){}.getType();
-            recordList = gson.fromJson(in, listType);
+            FileOperation fo = new FileOperation(recordList, in);
+            recordList = fo.loadFromFile();
 
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
         }
+        this.length = recordList.size();
+        adapter = new ArrayAdapter<Record>(this, R.layout.list_item, recordList);
+        oldRecordList.setAdapter(adapter);
+
+        recordLength.setText("Number of records:  "+length);
+
     }
+
+
+
+
+
+
+/*
+
 
 
     public void saveInFile() {
         try {
-            FileOutputStream outf = openFileOutput(FILENAME, Context.MODE_APPEND);
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 
-            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(outf)));
+            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
 
-            Gson gson = new Gson();
-            gson.toJson(recordList, out);
-            out.flush();
 
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
@@ -132,4 +170,7 @@ public class MainActivity extends ActionBarActivity {
             throw new RuntimeException();
         }
     }
+
+    */
+
 }

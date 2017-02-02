@@ -3,7 +3,6 @@ package com.example.ysu3_sizebook;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,20 +14,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import android.util.Log;
+import android.widget.Toast;
 
 
-public class add_record extends ActionBarActivity {
-    public static final String FILENAME = "file.sav";
+public class add_record extends Activity {
+    public static final String FILENAME = "save.sav";
+    public static final String TEMPFILE = "temp.sav";
     private ArrayList<Record> recordList;
-    private Record rec = new Record();
+    /*
     private String name;
     private String date ;
     private String neck;
@@ -38,7 +44,7 @@ public class add_record extends ActionBarActivity {
     private String hip;
     private String inseam;
     private String comment;
-
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,54 +52,97 @@ public class add_record extends ActionBarActivity {
         Intent intent = getIntent();
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
 
-
         Button saveButton = (Button) findViewById(R.id.save);
+        recordList = new ArrayList<>();
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setResult(RESULT_OK);
+                Record record = new Record();
+
                 EditText t1 = (EditText) findViewById(R.id.enter_name);
-                EditText t2 = (EditText) findViewById(R.id.enter_date);
-                EditText t3 = (EditText) findViewById(R.id.enter_neck);
-                EditText t4 = (EditText) findViewById(R.id.enter_bust);
-                EditText t5 = (EditText) findViewById(R.id.enter_chest);
-                EditText t6 = (EditText) findViewById(R.id.enter_waist);
-                EditText t7 = (EditText) findViewById(R.id.enter_hip);
-                EditText t8 = (EditText) findViewById(R.id.enter_inseam);
-                EditText t9 = (EditText) findViewById(R.id.enter_comment);
+                String name = t1.getText().toString();
 
-                name = t1.getText().toString();
-                date = t2.getText().toString();
-                neck = t3.getText().toString();
-                bust = t4.getText().toString();
-                chest = t5.getText().toString();
-                waist = t6.getText().toString();
-                hip = t7.getText().toString();
-                inseam = t8.getText().toString();
-                comment = t9.getText().toString();
+                if (!name.equals("")) {
 
-                rec.setName(name);
-                rec.setDate(date);
-                rec.setNeck(neck);
-                rec.setBust(bust);
-                rec.setChest(chest);
-                rec.setWaist(waist);
-                rec.setHip(hip);
-                rec.setInseam(inseam);
-                rec.setComment(comment);
+                    EditText t2 = (EditText) findViewById(R.id.enter_date);
+                    EditText t3 = (EditText) findViewById(R.id.enter_neck);
+                    EditText t4 = (EditText) findViewById(R.id.enter_bust);
+                    EditText t5 = (EditText) findViewById(R.id.enter_chest);
+                    EditText t6 = (EditText) findViewById(R.id.enter_waist);
+                    EditText t7 = (EditText) findViewById(R.id.enter_hip);
+                    EditText t8 = (EditText) findViewById(R.id.enter_inseam);
+                    EditText t9 = (EditText) findViewById(R.id.enter_comment);
 
-                recordList.add(rec);
 
-                saveInFile();
-                finish();
+                    String date = t2.getText().toString();
+                    String neck = t3.getText().toString();
+                    String bust = t4.getText().toString();
+                    String chest = t5.getText().toString();
+                    String waist = t6.getText().toString();
+                    String hip = t7.getText().toString();
+                    String inseam = t8.getText().toString();
+                    String comment = t9.getText().toString();
+
+                    record.setName(name);
+                    record.setDate(date);
+                    record.setNeck(neck);
+                    record.setBust(bust);
+                    record.setChest(chest);
+                    record.setWaist(waist);
+                    record.setHip(hip);
+                    record.setInseam(inseam);
+                    record.setComment(comment);
+
+
+                    //recordList.add(record);
+/*
+                    try {
+                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                        FileInputStream fis = openFileInput(FILENAME);
+                        BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
+                        BufferedReader in = new BufferedReader((new InputStreamReader(fis)));
+
+                        FileOperation fo = new FileOperation(recordList, in);
+                        recordList = fo.loadFromFile();
+                        recordList.add(record);
+
+
+                        FileOperation fw = new FileOperation(recordList, out);
+                        fw.saveInFile();
+
+                    } catch (FileNotFoundException e) {
+                        recordList = new ArrayList<Record>();
+                    } catch (IOException e) {
+                        throw new RuntimeException();
+                    }
+
+*/
+                    loadFromFile();
+                    recordList.add(record);
+
+                    saveInFile();
+                    recordList = new ArrayList<>();
+
+                    finish();
                 }
+                else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "Name cannot be empty!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
         });
-
-
-
-
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,7 +169,7 @@ public class add_record extends ActionBarActivity {
 
     public void saveInFile() {
         try {
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 
             BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
 
@@ -134,4 +183,20 @@ public class add_record extends ActionBarActivity {
             throw new RuntimeException();
         }
     }
+
+    public void loadFromFile(){
+        try {
+            FileInputStream inf = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(inf));
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Record>>() {
+            }.getType();
+            recordList = gson.fromJson(in, listType);
+
+        } catch (FileNotFoundException e) {
+            recordList = new ArrayList<Record>();
+        }
+    }
+
+
 }
