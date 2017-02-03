@@ -14,14 +14,24 @@
 
 
     <string name="enter_name">Enter name here</string>
-    <string name="enter_date">Enter Date here, yyyy-mm-dd</string>
-    <string name="neck">neck: circumference in inches</string>
-    <string name="bust">bust: circumference in inches</string>
-    <string name="chest">chest: circumference in inches</string>
-    <string name="waist">waist: circumference in inches</string>
-    <string name="hip">hip: circumference in inches</string>
-    <string name="inseam">inseam: circumference in inches</string>
+    <string name="enter_date">yyyy-mm-dd</string>
+    <string name="neck">in inches</string>
+    <string name="bust">in inches</string>
+    <string name="chest">in inches</string>
+    <string name="waist">in inches</string>
+    <string name="hip">in inches</string>
+    <string name="inseam">in inches</string>
     <string name="comment">comments</string>
+
+    <string name="nameLabel">*Name: </string>
+    <string name="dateLabel">Date: </string>
+    <string name="neckLabel">Neck: </string>
+    <string name="bustLabel">Bust: </string>
+    <string name="chestLabel">Chest: </string>
+    <string name="waistLabel">Waist: </string>
+    <string name="hipLabel">Hip: </string>
+    <string name="inseamLabel">Inseam: </string>
+    <string name="commentLabel">Comment: </string>
 
     <string name="save">save</string>
     <string name="title_activity_view_detail">view_detail</string>

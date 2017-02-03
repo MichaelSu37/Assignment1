@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             pm.showMessage();
         }
         else {
-            String detail = "Detail of this record: \n" +
+            String detail = "Detail of this record: \n\n" +
                     "Name: " + selectedRecord.getName() + "\n" +
                     "Date: " + selectedRecord.getDate() + "\n" +
                     "Neck: " + selectedRecord.getNeck() + "\n" +

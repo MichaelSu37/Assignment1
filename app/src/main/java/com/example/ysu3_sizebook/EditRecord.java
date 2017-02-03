@@ -98,7 +98,7 @@ public class EditRecord extends AppCompatActivity {
                     String hip = t7.getText().toString();
                     String inseam = t8.getText().toString();
                     String comment = t9.getText().toString();
-                    
+
 
                     resultIntent.putExtra("newName", name);
                     resultIntent.putExtra("newDate", date);
@@ -112,6 +112,9 @@ public class EditRecord extends AppCompatActivity {
 
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
+                }
+                else{
+
                 }
             }
         });
