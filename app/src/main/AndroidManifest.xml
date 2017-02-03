@@ -24,6 +24,10 @@
             android:name=".ViewDetail"
             android:label="@string/title_activity_view_detail" >
         </activity>
+        <activity
+            android:name=".EditRecord"
+            android:label="@string/title_activity_edit_record" >
+        </activity>
     </application>
 
 </manifest>

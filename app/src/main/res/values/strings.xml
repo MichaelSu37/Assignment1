@@ -25,6 +25,7 @@
 
     <string name="save">save</string>
     <string name="title_activity_view_detail">view_detail</string>
+    <string name="title_activity_edit_record">EditRecord</string>
 
 
 

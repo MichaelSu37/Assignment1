@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
     public static final String TEMPFILE = "temp.sav";
 
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
     private ListView oldRecordList;
     private ArrayList<Record> recordList;
     private Record selectedRecord;
-    //private Context context = getApplicationContext();
+    private Context context;
 
 
     @Override
@@ -51,6 +52,7 @@ public class MainActivity extends Activity {
 
 
         //recordList = new ArrayList<>();
+        context = getApplicationContext();
         oldRecordList = (ListView) findViewById(R.id.list_of_record);
         recordLength = (TextView) findViewById(R.id.totalnumber);
 
@@ -91,7 +93,7 @@ public class MainActivity extends Activity {
                     adapter.notifyDataSetChanged();
                 }
                 else{
-                    Context context = getApplicationContext();
+                    //Context context = getApplicationContext();
                     PromptMessage pm = new PromptMessage(context, "Please select a record first!");
                     pm.showMessage();
                 }
@@ -147,7 +149,7 @@ public class MainActivity extends Activity {
 
     public void showDetail(View view){
         if (selectedRecord == null){
-            Context context = getApplicationContext();
+            //Context context = getApplicationContext();
             PromptMessage pm = new PromptMessage(context, "Please select a record first!");
             pm.showMessage();
         }
@@ -173,11 +175,89 @@ public class MainActivity extends Activity {
     }
 
 
+    public void editRecord(View view){
+        if (selectedRecord == null){
+            //Context context = getApplicationContext();
+            PromptMessage pm = new PromptMessage(context, "Please select a record first!");
+            pm.showMessage();
+        }
+        else{
+            String name = selectedRecord.getName();
+            String date = selectedRecord.getDate();
+            String neck = selectedRecord.getNeck();
+            String bust = selectedRecord.getBust();
+            String chest = selectedRecord.getChest();
+            String waist = selectedRecord.getWaist();
+            String hip = selectedRecord.getHip();
+            String inseam = selectedRecord.getInseam();
+            String comment = selectedRecord.getComment();
+
+            Intent intent = new Intent(this, EditRecord.class);
+            intent.putExtra("Name", name);
+            intent.putExtra("Date", date);
+            intent.putExtra("Neck", neck);
+            intent.putExtra("Bust", bust);
+            intent.putExtra("Chest", chest);
+            intent.putExtra("Waist", waist);
+            intent.putExtra("Hip", hip);
+            intent.putExtra("Inseam", inseam);
+            intent.putExtra("Comment", comment);
+
+            startActivityForResult(intent, 1);
+
+
+
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String newName = data.getStringExtra("newName");
+                String newDate = data.getStringExtra("newDate");
+                String newNeck = data.getStringExtra("newNeck");
+                String newBust = data.getStringExtra("newBust");
+                String newChest = data.getStringExtra("newChest");
+                String newWaist = data.getStringExtra("newWaist");
+                String newHip = data.getStringExtra("newHip");
+                String newInseam = data.getStringExtra("newInseam");
+                String newComment = data.getStringExtra("newComment");
+
+                recordList.remove(selectedRecord);
+                Record record = new Record();
+                record.setName(newName);
+                record.setDate(newDate);
+                record.setNeck(newNeck);
+                record.setBust(newBust);
+                record.setChest(newChest);
+                record.setWaist(newWaist);
+                record.setHip(newHip);
+                record.setInseam(newInseam);
+                record.setComment(newComment);
+                recordList.add(record);
+
+                //adapter.notifyDataSetChanged();
+                try {
+                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
+                    FileOperation fw = new FileOperation(recordList, out);
+                    fw.saveInFile();
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    recordList = new ArrayList<Record>();
+                } catch (IOException e) {
+                    throw new RuntimeException();
+                }
+                selectedRecord = null;
+            }
+        }
+    }
+
 
 /*
-
-
-
     public void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);

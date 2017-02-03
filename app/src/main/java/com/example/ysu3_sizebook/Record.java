@@ -1,9 +1,11 @@
 package com.example.ysu3_sizebook;
 
+import android.os.Parcelable;
+
 /**
  * Created by ysu3 on 1/25/17.
  */
-public class Record {
+public class Record{
     private String name;
     private String date;
     private String neck;

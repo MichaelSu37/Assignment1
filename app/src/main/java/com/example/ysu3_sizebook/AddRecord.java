@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import android.util.Log;
 
 
-public class AddRecord extends Activity {
+public class AddRecord extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
     public static final String TEMPFILE = "temp.sav";
     private ArrayList<Record> recordList;
