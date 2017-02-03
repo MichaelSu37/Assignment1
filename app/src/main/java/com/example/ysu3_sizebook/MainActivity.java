@@ -1,8 +1,8 @@
 package com.example.ysu3_sizebook;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,18 +31,17 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     public static final String FILENAME = "save.sav";
     public static final String TEMPFILE = "temp.sav";
 
     private ArrayAdapter<Record> adapter;
-    private Adapter intAdapter;
     private TextView recordLength;
 
     private ListView oldRecordList;
     private ArrayList<Record> recordList;
     private Record selectedRecord;
-    private int length;
+    //private Context context = getApplicationContext();
 
 
     @Override
@@ -51,14 +50,14 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 
-        recordList = new ArrayList<>();
+        //recordList = new ArrayList<>();
         oldRecordList = (ListView) findViewById(R.id.list_of_record);
         recordLength = (TextView) findViewById(R.id.totalnumber);
 
         oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int i, long l) {
-                selectedRecord = (Record) adapter.getSelectedItem();
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                selectedRecord = (Record) adapter.getItemAtPosition(position);
                 if (selectedRecord == null){
                     Log.d("debug", "not selected");
                 }
@@ -80,21 +79,21 @@ public class MainActivity extends ActionBarActivity {
                         BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
                         FileOperation fw = new FileOperation(recordList, out);
                         fw.saveInFile();
+                        out.close();
                     } catch (FileNotFoundException e) {
                         recordList = new ArrayList<Record>();
                     } catch (IOException e) {
                         throw new RuntimeException();
                     }
+
+                    selectedRecord = null;
+                    recordLength.setText("Number of records:  " + recordList.size());
                     adapter.notifyDataSetChanged();
-
-
                 }
                 else{
                     Context context = getApplicationContext();
-                    int duration = Toast.LENGTH_SHORT;
-                    CharSequence text = "Please select a record first!";
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    PromptMessage pm = new PromptMessage(context, "Please select a record first!");
+                    pm.showMessage();
                 }
             }
         });
@@ -122,11 +121,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addRecord(View view){
-        Intent intent = new Intent(this, add_record.class);
-        startActivity(intent);
-
-    }
 
     @Override
     protected void onStart(){
@@ -140,16 +134,43 @@ public class MainActivity extends ActionBarActivity {
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
         }
-        this.length = recordList.size();
         adapter = new ArrayAdapter<Record>(this, R.layout.list_item, recordList);
         oldRecordList.setAdapter(adapter);
 
-        recordLength.setText("Number of records:  "+length);
-
+        recordLength.setText("Number of records:  " + recordList.size());
     }
 
+    public void addRecord(View view){
+        Intent intent = new Intent(this, AddRecord.class);
+        startActivity(intent);
+    }
 
+    public void showDetail(View view){
+        if (selectedRecord == null){
+            Context context = getApplicationContext();
+            PromptMessage pm = new PromptMessage(context, "Please select a record first!");
+            pm.showMessage();
+        }
+        else {
+            String detail = "Detail of this record: \n" +
+                    "Name: " + selectedRecord.getName() + "\n" +
+                    "Date: " + selectedRecord.getDate() + "\n" +
+                    "Neck: " + selectedRecord.getNeck() + "\n" +
+                    "Bust: " + selectedRecord.getBust() + "\n" +
+                    "Chest: " + selectedRecord.getChest() + "\n" +
+                    "Waist: " + selectedRecord.getWaist() + "\n" +
+                    "Hip: " + selectedRecord.getHip() + "\n" +
+                    "Inseam: " + selectedRecord.getInseam() + "\n" +
+                    "Comment: " + selectedRecord.getComment();
 
+            Intent intent = new Intent(this, ViewDetail.class);
+            intent.putExtra("Detail", detail);
+            startActivity(intent);
+
+        }
+
+        selectedRecord = null;
+    }
 
 
 

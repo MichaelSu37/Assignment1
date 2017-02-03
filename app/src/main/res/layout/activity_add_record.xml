@@ -3,7 +3,7 @@
     android:id="@+id/activity_add_record"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ysu3_sizebook.add_record"
+    tools:context="com.example.ysu3_sizebook.AddRecord"
     android:orientation="vertical">
 
     <LinearLayout

@@ -27,10 +27,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import android.util.Log;
-import android.widget.Toast;
 
 
-public class add_record extends Activity {
+public class AddRecord extends Activity {
     public static final String FILENAME = "save.sav";
     public static final String TEMPFILE = "temp.sav";
     private ArrayList<Record> recordList;
@@ -53,14 +52,30 @@ public class add_record extends Activity {
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
 
         Button saveButton = (Button) findViewById(R.id.save);
-        recordList = new ArrayList<>();
+
+        //loadFromFile();
+
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            FileOperation read = new FileOperation(recordList, in);
+            recordList = read.loadFromFile();
+            in.close();
+        } catch (FileNotFoundException e) {
+            recordList = new ArrayList<Record>();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setResult(RESULT_OK);
+                Context context = getApplicationContext();
                 Record record = new Record();
+
 
                 EditText t1 = (EditText) findViewById(R.id.enter_name);
                 String name = t1.getText().toString();
@@ -97,44 +112,32 @@ public class add_record extends Activity {
                     record.setComment(comment);
 
 
-                    //recordList.add(record);
-/*
+                    recordList.add(record);
+
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                        FileInputStream fis = openFileInput(FILENAME);
                         BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
-                        BufferedReader in = new BufferedReader((new InputStreamReader(fis)));
-
-                        FileOperation fo = new FileOperation(recordList, in);
-                        recordList = fo.loadFromFile();
-                        recordList.add(record);
-
-
-                        FileOperation fw = new FileOperation(recordList, out);
-                        fw.saveInFile();
-
+                        FileOperation write = new FileOperation(recordList, out);
+                        write.saveInFile();
+                        out.close();
                     } catch (FileNotFoundException e) {
                         recordList = new ArrayList<Record>();
                     } catch (IOException e) {
                         throw new RuntimeException();
                     }
-
-*/
-                    loadFromFile();
+/*
                     recordList.add(record);
-
                     saveInFile();
-                    recordList = new ArrayList<>();
+*/
 
+                    recordList = new ArrayList<>();
+                    PromptMessage pm = new PromptMessage(context, "Record saved successfully");
+                    pm.showMessage();
                     finish();
                 }
                 else{
-                    Context context = getApplicationContext();
-                    CharSequence text = "Name cannot be empty!";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    PromptMessage pm = new PromptMessage(context, "Name cannot be empty!");
+                    pm.showMessage();
                 }
             }
         });
@@ -166,7 +169,7 @@ public class add_record extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
+/*
     public void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
@@ -177,6 +180,7 @@ public class add_record extends Activity {
             gson.toJson(recordList, out);
             out.flush();
 
+            out.close();
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
         } catch (IOException e) {
@@ -192,11 +196,13 @@ public class add_record extends Activity {
             Type listType = new TypeToken<ArrayList<Record>>() {
             }.getType();
             recordList = gson.fromJson(in, listType);
-
+            in.close();
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
     }
-
+*/
 
 }

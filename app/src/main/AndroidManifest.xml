@@ -17,8 +17,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".add_record"
+            android:name=".AddRecord"
             android:label="@string/title_activity_add_record" >
+        </activity>
+        <activity
+            android:name=".ViewDetail"
+            android:label="@string/title_activity_view_detail" >
         </activity>
     </application>
 

@@ -13,7 +13,6 @@ public class Record {
     private String hip;
     private String inseam;
     private String comment;
-    private String finalString;
 
     public Record(String name){
         this.name = name;
@@ -61,7 +60,7 @@ public class Record {
     }
 
     public void setNeck(String neck) {
-        this.neck = neck;
+        this.neck = roundInput(neck);
     }
 
     public String getBust() {
@@ -69,7 +68,8 @@ public class Record {
     }
 
     public void setBust(String bust) {
-        this.bust = bust;
+
+        this.bust = roundInput(bust);
     }
 
     public String getChest() {
@@ -77,7 +77,7 @@ public class Record {
     }
 
     public void setChest(String chest) {
-        this.chest = chest;
+        this.chest = roundInput(chest);
     }
 
     public String getWaist() {
@@ -85,7 +85,7 @@ public class Record {
     }
 
     public void setWaist(String waist) {
-        this.waist = waist;
+        this.waist = roundInput(waist);
     }
 
     public String getHip() {
@@ -93,7 +93,7 @@ public class Record {
     }
 
     public void setHip(String hip) {
-        this.hip = hip;
+        this.hip = roundInput(hip);
     }
 
     public String getInseam() {
@@ -101,7 +101,7 @@ public class Record {
     }
 
     public void setInseam(String inseam) {
-        this.inseam = inseam;
+        this.inseam = roundInput(inseam);
     }
 
     public String getComment() {
@@ -112,9 +112,19 @@ public class Record {
         this.comment = comment;
     }
 
+    public String roundInput(String input){
+        if (input.equals("")){
+            return "";
+        }
+        double number = Double.parseDouble(input);
+        number = Math.round(number * 10.0) / 10.0;
+        return ""+number;
+    }
+
+
     @Override
     public String toString(){
-        finalString = null;
+        String finalString;
         finalString = "Name: " + name + "\n" +
                 "bust: " + bust + "\n" +
                 "chest: " + chest + "\n" +
