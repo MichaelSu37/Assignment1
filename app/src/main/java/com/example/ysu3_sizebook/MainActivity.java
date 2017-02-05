@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+        /* Code borrowed from lab
+           Name: Joshua
+           Date: 2017-01-29
+         */
+
         // setup Click listener for handing click event of deleteButton
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /* Code borrowed from lab(lonelyTwitter)
+       Name: Joshua
+       Date: 2017-01-29
+     */
     @Override
     protected void onStart(){
         super.onStart();

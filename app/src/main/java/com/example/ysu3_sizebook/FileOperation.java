@@ -14,6 +14,11 @@ import java.util.ArrayList;
 /**
  * Created by ysu3 on 2/1/17.
  */
+
+/* The code is borrowed from lab
+*  TA: ShiDa He
+*  2017-02-02
+* */
 public class FileOperation{
     private BufferedReader in;
     private BufferedWriter out;

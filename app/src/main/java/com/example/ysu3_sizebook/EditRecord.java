@@ -51,7 +51,6 @@ public class EditRecord extends AppCompatActivity {
         t9 = (EditText) findViewById(R.id.enter_comment);
 
 
-
         // setup onClick listener for save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
