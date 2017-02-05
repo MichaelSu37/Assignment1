@@ -28,17 +28,6 @@ public class EditRecord extends AppCompatActivity {
     private EditText t8;
     private EditText t9;
 
-
-    private String name;
-    private String date;
-    private String neck;
-    private String bust;
-    private String chest;
-    private String waist;
-    private String hip;
-    private String inseam;
-    private String comment;
-
     private Intent resultIntent;
 
 
@@ -50,6 +39,7 @@ public class EditRecord extends AppCompatActivity {
         resultIntent = getIntent();
         Button saveButton = (Button) findViewById(R.id.save);
 
+
         t1 = (EditText) findViewById(R.id.enter_name);
         t2 = (EditText) findViewById(R.id.enter_date);
         t3 = (EditText) findViewById(R.id.enter_neck);
@@ -60,29 +50,9 @@ public class EditRecord extends AppCompatActivity {
         t8 = (EditText) findViewById(R.id.enter_inseam);
         t9 = (EditText) findViewById(R.id.enter_comment);
 
-        name = resultIntent.getStringExtra("Name");
-        date = resultIntent.getStringExtra("Date");
-        neck = resultIntent.getStringExtra("Neck");
-        bust = resultIntent.getStringExtra("Bust");
-        chest = resultIntent.getStringExtra("Chest");
-        waist = resultIntent.getStringExtra("Waist");
-        hip = resultIntent.getStringExtra("Hip");
-        inseam = resultIntent.getStringExtra("Inseam");
-        comment = resultIntent.getStringExtra("Comment");
-
-        t1.setText(name);
-        t2.setText(date);
-        t3.setText(neck);
-        t4.setText(bust);
-        t5.setText(chest);
-        t6.setText(waist);
-        t7.setText(hip);
-        t8.setText(inseam);
-        t9.setText(comment);
 
 
-
-
+        // setup onClick listener for save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +60,8 @@ public class EditRecord extends AppCompatActivity {
 
                 String name = t1.getText().toString();
                 if (!name.equals("")) {
+
+                    // get data from text fields
                     String date = t2.getText().toString();
                     String neck = t3.getText().toString();
                     String bust = t4.getText().toString();
@@ -110,16 +82,46 @@ public class EditRecord extends AppCompatActivity {
                     resultIntent.putExtra("newInseam", inseam);
                     resultIntent.putExtra("newComment", comment);
 
+                    // return results to parent activity
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 }
                 else{
-
+                    Context context = getApplicationContext();
+                    PromptMessage pm = new PromptMessage(context, "Name cannot be empty!");
+                    pm.showMessage();
                 }
             }
         });
 
     }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        // read data from intent
+        String name = resultIntent.getStringExtra("Name");
+        String date = resultIntent.getStringExtra("Date");
+        String neck = resultIntent.getStringExtra("Neck");
+        String bust = resultIntent.getStringExtra("Bust");
+        String chest = resultIntent.getStringExtra("Chest");
+        String waist = resultIntent.getStringExtra("Waist");
+        String hip = resultIntent.getStringExtra("Hip");
+        String inseam = resultIntent.getStringExtra("Inseam");
+        String comment = resultIntent.getStringExtra("Comment");
+
+        t1.setText(name);
+        t2.setText(date);
+        t3.setText(neck);
+        t4.setText(bust);
+        t5.setText(chest);
+        t6.setText(waist);
+        t7.setText(hip);
+        t8.setText(inseam);
+        t9.setText(comment);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,7 +1,5 @@
 package com.example.ysu3_sizebook;
 
-import android.os.Parcelable;
-
 /**
  * Created by ysu3 on 1/25/17.
  */
@@ -111,12 +109,18 @@ public class Record{
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        if (comment.length() > 140){
+            this.comment = comment.substring(0, 140);
+        }
+        else {
+            this.comment = comment;
+        }
     }
 
+    // round numeric inputs to 1 decimal place
     public String roundInput(String input){
         if (input.equals("")){
-            return "";
+            return input;
         }
         double number = Double.parseDouble(input);
         number = Math.round(number * 10.0) / 10.0;
@@ -124,6 +128,7 @@ public class Record{
     }
 
 
+    // convert a Record object into string to be displayed in ListView
     @Override
     public String toString(){
         String finalString;

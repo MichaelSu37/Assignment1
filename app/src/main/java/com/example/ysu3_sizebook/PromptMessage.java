@@ -11,11 +11,20 @@ public class PromptMessage {
     private Context context;
 
 
+    /**
+     * Instantiates a new Prompt message.
+     *
+     * @param context the context of application
+     * @param msg     the msg to be displayed
+     */
     public PromptMessage(Context context, String msg){
         this.context = context;
         this.message = msg;
     }
 
+    /**
+     * Show message on screen.
+     */
     public void showMessage(){
         int duration = Toast.LENGTH_SHORT;
         CharSequence text = message;

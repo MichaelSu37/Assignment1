@@ -7,8 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -20,18 +19,35 @@ public class FileOperation{
     private BufferedWriter out;
     private ArrayList<Record> recordList;
 
+    /**
+     * Instantiates a new File operation.
+     *
+     * @param recordArrayList the record array list
+     * @param in              the input buffer reader
+     */
     public FileOperation(ArrayList<Record> recordArrayList, BufferedReader in){
         this.in = in;
         recordList = recordArrayList;
 
     }
 
+    /**
+     * Instantiates a new File operation.
+     *
+     * @param recordArrayList the record array list
+     * @param out             the output buffer writer
+     */
     public FileOperation(ArrayList<Record> recordArrayList, BufferedWriter out){
         this.out = out;
         recordList = recordArrayList;
 
     }
 
+    /**
+     * Load from file array list.
+     *
+     * @return the array list
+     */
     public ArrayList<Record> loadFromFile() {
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Record>>() {
@@ -42,6 +58,11 @@ public class FileOperation{
     }
 
 
+    /**
+     * Save in file.
+     *
+     * @throws IOException the io exception
+     */
     public void saveInFile() throws IOException {
 
         Gson gson = new Gson();

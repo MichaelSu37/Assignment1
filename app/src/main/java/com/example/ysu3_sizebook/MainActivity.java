@@ -13,13 +13,9 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,16 +25,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
-    public static final String TEMPFILE = "temp.sav";
 
     private ArrayAdapter<Record> adapter;
     private TextView recordLength;
-
     private ListView oldRecordList;
     private ArrayList<Record> recordList;
     private Record selectedRecord;
@@ -50,25 +43,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //recordList = new ArrayList<>();
+        // setup context for Toast
         context = getApplicationContext();
+
         oldRecordList = (ListView) findViewById(R.id.list_of_record);
         recordLength = (TextView) findViewById(R.id.totalnumber);
+        Button deleteButton = (Button) findViewById(R.id.delete_button);
 
+
+        // setup Click listener object for handling click events of ListView
         oldRecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 selectedRecord = (Record) adapter.getItemAtPosition(position);
-                if (selectedRecord == null){
-                    Log.d("debug", "not selected");
-                }
+
             }
 
 
         });
 
-        Button deleteButton = (Button) findViewById(R.id.delete_button);
+        // setup Click listener for handing click event of deleteButton
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedRecord != null){
                     recordList.remove(selectedRecord);
 
+                    // write new record list to file
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
                         BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
@@ -89,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     selectedRecord = null;
+
+                    // update stats
                     recordLength.setText("Number of records:  " + recordList.size());
                     adapter.notifyDataSetChanged();
                 }
                 else{
-                    //Context context = getApplicationContext();
                     PromptMessage pm = new PromptMessage(context, "Please select a record first!");
                     pm.showMessage();
                 }
@@ -127,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        // when application started, it tries to read existing records from file first.
         try {
             FileInputStream inf = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(inf));
@@ -136,20 +133,25 @@ public class MainActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             recordList = new ArrayList<Record>();
         }
+
+        // setup adapter for displaying Record objects in ListView
         adapter = new ArrayAdapter<Record>(this, R.layout.list_item, recordList);
         oldRecordList.setAdapter(adapter);
 
+        // update stats
         recordLength.setText("Number of records:  " + recordList.size());
     }
 
+
+    // setup Click listener for add record button
     public void addRecord(View view){
         Intent intent = new Intent(this, AddRecord.class);
         startActivity(intent);
     }
 
+    // setup Click listener for view detail button
     public void showDetail(View view){
         if (selectedRecord == null){
-            //Context context = getApplicationContext();
             PromptMessage pm = new PromptMessage(context, "Please select a record first!");
             pm.showMessage();
         }
@@ -174,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         selectedRecord = null;
     }
 
-
+    // setup Click listener for edit record button
     public void editRecord(View view){
         if (selectedRecord == null){
             //Context context = getApplicationContext();
@@ -193,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
             String comment = selectedRecord.getComment();
 
             Intent intent = new Intent(this, EditRecord.class);
+
+            // pass record to child activity
             intent.putExtra("Name", name);
             intent.putExtra("Date", date);
             intent.putExtra("Neck", neck);
@@ -205,17 +209,16 @@ public class MainActivity extends AppCompatActivity {
 
             startActivityForResult(intent, 1);
 
-
-
         }
     }
 
-
+    // receive results returned by edit record child activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
+                // receive result from child activity
                 String newName = data.getStringExtra("newName");
                 String newDate = data.getStringExtra("newDate");
                 String newNeck = data.getStringExtra("newNeck");
@@ -237,9 +240,10 @@ public class MainActivity extends AppCompatActivity {
                 record.setHip(newHip);
                 record.setInseam(newInseam);
                 record.setComment(newComment);
+
                 recordList.add(record);
 
-                //adapter.notifyDataSetChanged();
+                // write new list of record to file
                 try {
                     FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
                     BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
@@ -252,26 +256,11 @@ public class MainActivity extends AppCompatActivity {
                     throw new RuntimeException();
                 }
                 selectedRecord = null;
+                PromptMessage pm = new PromptMessage(context, "Record saved successfully");
+                pm.showMessage();
             }
         }
     }
 
-
-/*
-    public void saveInFile() {
-        try {
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-
-            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
-
-
-        } catch (FileNotFoundException e) {
-            recordList = new ArrayList<Record>();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    */
 
 }

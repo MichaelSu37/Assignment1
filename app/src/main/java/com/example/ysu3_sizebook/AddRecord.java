@@ -1,21 +1,16 @@
 package com.example.ysu3_sizebook;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,30 +27,18 @@ import android.util.Log;
 
 public class AddRecord extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
-    public static final String TEMPFILE = "temp.sav";
     private ArrayList<Record> recordList;
-    /*
-    private String name;
-    private String date ;
-    private String neck;
-    private String bust;
-    private String chest;
-    private String waist;
-    private String hip;
-    private String inseam;
-    private String comment;
-    */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
-        Intent intent = getIntent();
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
+        //Intent intent = getIntent();
+        //ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
 
         Button saveButton = (Button) findViewById(R.id.save);
 
-        //loadFromFile();
-
+        // read all old records
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -69,7 +52,7 @@ public class AddRecord extends AppCompatActivity {
         }
 
 
-
+        // setup onClick listener for save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +66,7 @@ public class AddRecord extends AppCompatActivity {
 
                 if (!name.equals("")) {
 
+                    // get data in text fields
                     EditText t2 = (EditText) findViewById(R.id.enter_date);
                     EditText t3 = (EditText) findViewById(R.id.enter_neck);
                     EditText t4 = (EditText) findViewById(R.id.enter_bust);
@@ -113,6 +97,7 @@ public class AddRecord extends AppCompatActivity {
                     record.setComment(comment);
 
 
+                    // save new recordList in file
                     recordList.add(record);
 
                     try {
@@ -126,10 +111,7 @@ public class AddRecord extends AppCompatActivity {
                     } catch (IOException e) {
                         throw new RuntimeException();
                     }
-/*
-                    recordList.add(record);
-                    saveInFile();
-*/
+
 
                     recordList = new ArrayList<>();
                     PromptMessage pm = new PromptMessage(context, "Record saved successfully");
@@ -143,7 +125,6 @@ public class AddRecord extends AppCompatActivity {
             }
         });
     }
-
 
 
 
@@ -170,40 +151,5 @@ public class AddRecord extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-/*
-    public void saveInFile() {
-        try {
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-
-            BufferedWriter out = new BufferedWriter((new OutputStreamWriter(fos)));
-
-            Gson gson = new Gson();
-            gson.toJson(recordList, out);
-            out.flush();
-
-            out.close();
-        } catch (FileNotFoundException e) {
-            recordList = new ArrayList<Record>();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    public void loadFromFile(){
-        try {
-            FileInputStream inf = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(inf));
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Record>>() {
-            }.getType();
-            recordList = gson.fromJson(in, listType);
-            in.close();
-        } catch (FileNotFoundException e) {
-            recordList = new ArrayList<Record>();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-*/
 
 }

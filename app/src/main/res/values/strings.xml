@@ -5,7 +5,6 @@
     <string name="edit_record">Edit record</string>
     <string name="delete_record">Delete record</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="records">List of records:</string>
     <string name="number_of_records">Number of records:  </string>
 
