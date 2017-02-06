@@ -123,6 +123,9 @@ public class Record{
             return input;
         }
         double number = Double.parseDouble(input);
+        if (number < 0){
+            number = number * -1;
+        }
         number = Math.round(number * 10.0) / 10.0;
         return ""+number;
     }

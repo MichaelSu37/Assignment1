@@ -17,6 +17,8 @@ import android.widget.EditText;
 import java.security.PrivateKey;
 import java.util.jar.Attributes;
 
+
+// This class implements functions for edit record button
 public class EditRecord extends AppCompatActivity {
     private EditText t1;
     private EditText t2;
@@ -29,6 +31,7 @@ public class EditRecord extends AppCompatActivity {
     private EditText t9;
 
     private Intent resultIntent;
+
 
 
     @Override

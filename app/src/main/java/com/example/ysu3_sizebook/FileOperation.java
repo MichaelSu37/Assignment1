@@ -15,10 +15,12 @@ import java.util.ArrayList;
  * Created by ysu3 on 2/1/17.
  */
 
-/* The code is borrowed from lab
+/* The code for saveInFile() and loadFromFile() are borrowed from lab
 *  TA: ShiDa He
 *  2017-02-02
 * */
+
+// this class contains methods of loading/saving files
 public class FileOperation{
     private BufferedReader in;
     private BufferedWriter out;

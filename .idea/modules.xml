@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Sizebook.iml" filepath="$PROJECT_DIR$/Sizebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ysu3-Sizebook.iml" filepath="$PROJECT_DIR$/ysu3-Sizebook.iml" />
     </modules>
   </component>
 </project>

@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+
+// This class implements functions for Main activity
 public class MainActivity extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /* Code borrowed from lab
+        /* Code for button.setOnClickListener is borrowed from lab (lonelyTwitter)
            Name: Joshua
            Date: 2017-01-29
          */
@@ -126,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /* Code borrowed from lab(lonelyTwitter)
+    /* Code for onStart is borrowed from lab(lonelyTwitter)
        Name: Joshua
        Date: 2017-01-29
      */

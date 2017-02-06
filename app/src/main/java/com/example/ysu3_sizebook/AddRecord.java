@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import android.util.Log;
 
 
+
+// This class implements functions for add record button
 public class AddRecord extends AppCompatActivity {
     public static final String FILENAME = "save.sav";
     private ArrayList<Record> recordList;
@@ -33,12 +35,10 @@ public class AddRecord extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
-        //Intent intent = getIntent();
-        //ViewGroup layout = (ViewGroup) findViewById(R.id.activity_add_record);
 
         Button saveButton = (Button) findViewById(R.id.save);
 
-        // read all old records
+        // read all old records from file
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -77,6 +77,7 @@ public class AddRecord extends AppCompatActivity {
                     EditText t9 = (EditText) findViewById(R.id.enter_comment);
 
 
+
                     String date = t2.getText().toString();
                     String neck = t3.getText().toString();
                     String bust = t4.getText().toString();
@@ -85,6 +86,7 @@ public class AddRecord extends AppCompatActivity {
                     String hip = t7.getText().toString();
                     String inseam = t8.getText().toString();
                     String comment = t9.getText().toString();
+
 
                     record.setName(name);
                     record.setDate(date);
